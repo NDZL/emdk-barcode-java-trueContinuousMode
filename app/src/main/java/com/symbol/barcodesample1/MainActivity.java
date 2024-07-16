@@ -85,7 +85,7 @@ public class MainActivity extends Activity implements EMDKListener, DataListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		
-		deviceList = new ArrayList<ScannerInfo>();
+		deviceList = new ArrayList<>();
 
 		EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
 
@@ -301,6 +301,7 @@ public class MainActivity extends Activity implements EMDKListener, DataListener
                 new AsyncDataUpdate().execute(dataString);
             }
         }
+
     }
 
     @Override
@@ -499,13 +500,16 @@ public class MainActivity extends Activity implements EMDKListener, DataListener
             switch (triggerIndex) {
                 case 0: // Selected "HARD"
                     scanner.triggerType = TriggerType.HARD;
+                    checkBoxContinuous.setEnabled(false);
                     break;
                 case 1: // Selected "SOFT"
                     scanner.triggerType = TriggerType.SOFT_ALWAYS;
+                    checkBoxContinuous.setEnabled(true);
                     break;
             }
         }
     }
+
 
     private void setDecoders() {
 
@@ -634,6 +638,11 @@ public class MainActivity extends Activity implements EMDKListener, DataListener
                 textViewStatus.setText("Status: " + "Failed to initialize the scanner device.");
             }
         }
+
+        if(triggerIndex==1)
+            checkBoxContinuous.setEnabled(true);
+        else
+            checkBoxContinuous.setEnabled(false);
     }
 
     private void deInitScanner() {
